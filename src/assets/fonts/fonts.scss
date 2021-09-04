@@ -1,0 +1,31 @@
+/* this mixin works only if all font-file variations u have, eot, woff, ttf, etc. */
+/* use this one to convert your font to each other -> */
+/* https://www.font-converter.net/en */
+
+// Gilroy
+@include font("Gilroy", "./Gilroy/Gilroy-Black", 900);
+@include font("Gilroy", "./Gilroy/Gilroy-BlackItalic", 900, italic);
+@include font("Gilroy", "./Gilroy/Gilroy-ExtraBold", 800);
+@include font("Gilroy", "./Gilroy/Gilroy-ExtraBoldItalic", 800, italic);
+@include font("Gilroy", "./Gilroy/Gilroy-Bold", 700);
+@include font("Gilroy", "./Gilroy/Gilroy-BoldItalic", 700, italic);
+@include font("Gilroy", "./Gilroy/Gilroy-SemiBold", 600);
+@include font("Gilroy", "./Gilroy/Gilroy-SemiBoldItalic", 600, italic);
+@include font("Gilroy", "./Gilroy/Gilroy-Medium", 500);
+@include font("Gilroy", "./Gilroy/Gilroy-MediumItalic", 500, italic);
+@include font("Gilroy", "./Gilroy/Gilroy-Regular", 400);
+@include font("Gilroy", "./Gilroy/Gilroy-RegularItalic", 400, italic);
+@include font("Gilroy", "./Gilroy/Gilroy-Light", 300);
+@include font("Gilroy", "./Gilroy/Gilroy-LightItalic", 300, italic);
+@include font("Gilroy", "./Gilroy/Gilroy-UltraLight", 200);
+@include font("Gilroy", "./Gilroy/Gilroy-UltraLightItalic", 200, italic);
+@include font("Gilroy", "./Gilroy/Gilroy-Thin", 100);
+@include font("Gilroy", "./Gilroy/Gilroy-ThinItalic", 100, italic);
+
+// Golos
+@include font("Golos", "./Golos/Golos Text_Black", 900);
+@include font("Golos", "./Golos/Golos Text_Bold", 700);
+@include font("Golos", "./Golos/Golos Text_DemiBold", 600);
+@include font("Golos", "./Golos/Golos Text_Medium", 500);
+@include font("Golos", "./Golos/Golos Text_Regular", 400);
+@include font("Golos", "./Golos/Golos Text_VF", 300);

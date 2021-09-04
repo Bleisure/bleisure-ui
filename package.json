@@ -1,0 +1,60 @@
+{
+  "name": "@bleisure/ui",
+  "version": "0.0.1",
+  "description": "UI-Kit for bleisure project.",
+  "main": "./dist/index.js",
+  "keywords": [],
+  "author": "DCDRins",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm dist/bundle.js",
+    "build-prod": "parcel build src/index.ts",
+    "test": "jest",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "dependencies": {
+    "classnames": "^2.3.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "styled-components": "^5.3.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "@babel/preset-react": "^7.14.5",
+    "@storybook/addon-actions": "^6.3.8",
+    "@storybook/addon-docs": "^6.3.8",
+    "@storybook/addon-essentials": "^6.3.8",
+    "@storybook/addon-links": "^6.3.8",
+    "@storybook/react": "^6.3.8",
+    "@types/node": "^16.7.10",
+    "@types/react": "^17.0.19",
+    "@types/react-dom": "^17.0.9",
+    "@types/styled-components": "^5.1.13",
+    "babel-jest": "^27.1.0",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-styled-components": "^1.13.2",
+    "jest": "^27.1.0",
+    "parcel-bundler": "^1.12.5",
+    "prettier": "^2.3.2",
+    "react-docgen-typescript": "^2.1.0",
+    "react-is": "^17.0.2",
+    "storybook-addon-react-docgen": "^1.2.42",
+    "typescript": "^4.4.2"
+  },
+  "resolutions": {
+    "styled-components": "^5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DCDRins/bleisure-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DCDRins/bleisure-ui/issues"
+  },
+  "homepage": "https://github.com/DCDRins/bleisure-ui#readme",
+  "files": [
+    "dist/**/*"
+  ]
+}
