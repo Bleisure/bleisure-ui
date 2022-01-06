@@ -1,15 +1,13 @@
 {
   "compilerOptions": {
     "outDir": "./dist/",
-    "types": ["node"],
+    "types": ["node", "react/next", "react-dom/next"],
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "noImplicitReturns": true,
-    "noImplicitAny": true,
     "module": "es6",
     "moduleResolution": "node",
-    "allowJs": true,
+    "allowJs": false,
     "jsx": "react",
     "target": "es6",
     "declaration": false,
@@ -21,7 +19,13 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "strictPropertyInitialization": true,
+    "strictBindCallApply": true
   },
-  "include": ["./src/**/*", "src/declared.d.ts"]
+  "include": ["./src/**/*"]
 }

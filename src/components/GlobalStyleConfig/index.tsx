@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle, StyledConfig } from 'styled-components'
 
 export const Styled = createGlobalStyle`
 * {
@@ -6,3 +6,19 @@ export const Styled = createGlobalStyle`
     font-family: Gilroy !important;
   }
 `
+export type StyledComponentConfigType = <P extends Object = {}>(
+  as?: Array<keyof P>,
+) => StyledConfig<P>
+
+export const styledComponentConfig: StyledComponentConfigType = (as = []) => ({
+  shouldForwardProp: (prop, defaultValidatorFn) =>
+    !as.includes(prop) && defaultValidatorFn(prop),
+  /**
+   * @TODO
+   *
+   * componentId
+   * displayName
+   */
+})
+
+styledComponentConfig()

@@ -1,26 +1,26 @@
 import React from 'react'
 import { Meta } from '@storybook/react'
-
-import Button from '.'
-import { ButtonProps } from './view'
-
 import EventIcon from '../../assets/icons/create-event.svg'
-import Icon from '../Icon'
-import { Styled } from '../GlobalStyleConfig'
+import { Icon } from '../.core/Icon'
+import { Button } from '.'
 
 export default {
-  title: 'Button',
-  component: Button,
-} as Meta
+  title: 'Components/Button',
+  component: Button.Component,
+  args: {
+    ...Button.defaultProps,
+    size: 'base',
+  },
+} as Meta<Button.Props.Props>
 
-export const Primary = (args: ButtonProps) => (
-  <Button color="primary" after={<Icon src={EventIcon} />} {...args}>
+export const Example = (args: Button.Props.Props) => (
+  <Button.Component
+    color="primary"
+    after={{
+      x: <Icon.Component {...args} src={EventIcon} size="m" />,
+    }}
+    {...args}
+  >
     Создать событие
-  </Button>
-)
-
-export const Secondary = (args: ButtonProps) => (
-  <Button color="secondary" {...args}>
-    Secondary
-  </Button>
+  </Button.Component>
 )

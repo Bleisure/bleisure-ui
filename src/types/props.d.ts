@@ -1,61 +1,30 @@
 import React from 'react'
-import { RouteComponentProps } from 'react-router'
+import { __Sizes } from '../assets/styles/types'
+import { ContainerProps } from '../components/.core/Container'
+import { RefWithCurrent } from './types'
 
-export interface ObjectClassNames {
-  [index: string]: boolean
-}
-
-export interface DangerInnerHTML {
-  __html: string
-}
-
-export type SVGType = ComponentType<SVGProps<SVGSVGElement>>
-
-export interface HasProps<T = any> {
-  props?: T
-}
-
-export interface HasClassName {
-  className?: string | number | ObjectClassNames
-}
-
-export interface HasLabel {
-  label: string
-}
-
-export interface HasScrollTop {
-  scrollTop?: number
-}
-
-export type HasRouterProps = {
-  location: {
-    pathname: string
-    hash: string
+export namespace __Props {
+  interface Default {
+    readonly size: keyof __Sizes
   }
-  match: {
-    isExact: boolean
-    params: any
-    path: string
-    url: string
+
+  interface Required {}
+
+  interface Optional extends HasChildren {}
+
+  interface HasStyleObject {
+    style?: React.CSSProperties
   }
-}
 
-export interface HasStyleObject {
-  style?: React.CSSProperties
-}
+  interface HasChildren {
+    children?: React.ReactNode
+  }
 
-export interface HasChildren {
-  children?: React.ReactNode
-}
+  interface HasRef<T> {
+    getRef?: RefWithCurrent<T>
+  }
 
-export interface RefWithCurrent<T> {
-  current: T | null
-}
-
-export interface HasRef<T> {
-  getRef?: RefWithCurrent<T>
-}
-
-export interface HasDangerHTML {
-  dangerouslySetInnerHTML?: DangerInnerHTML
+  interface HasDangerHTML {
+    dangerouslySetInnerHTML?: DangerInnerHTML
+  }
 }
