@@ -7,7 +7,7 @@ import { Sizes } from '../../assets/styles/sizes'
 import { Substrate } from '../.core/Substrate'
 import { Input } from '../.core/Input'
 import { Contrasts } from '../../assets/styles/colors'
-import { mapRanges, Range } from '../../lib/mapRanges'
+import { Range } from '../../utils/ranges.utils'
 import { getMatch } from './stuff'
 import { Nullable } from '../../types/types'
 
@@ -196,3 +196,5 @@ export namespace FormField {
     }),
   )
 }
+
+export default FormField.Component

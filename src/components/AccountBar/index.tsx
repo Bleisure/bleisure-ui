@@ -85,6 +85,6 @@ export namespace AccountBar {
       },
     }),
   )
-
-  const After = styled.button({})
 }
+
+export default AccountBar.Component

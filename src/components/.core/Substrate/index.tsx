@@ -1,14 +1,9 @@
 import React from 'react'
-import styled, {
-  css,
-  CSSProperties,
-  ThemedStyledProps,
-} from 'styled-components'
+import styled, { css, CSSProperties } from 'styled-components'
 import { Sizes } from '../../../assets/styles/sizes'
 import { Accents, Colors } from '../../../assets/styles/colors'
 import { __Colors, __Sizes } from '../../../assets/styles/types'
 import { __Props } from '../../../types/props'
-import { Nullable } from '../../../types/types'
 
 /**
  * @description A parent must be relative

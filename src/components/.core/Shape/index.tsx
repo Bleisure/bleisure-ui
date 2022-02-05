@@ -1,11 +1,8 @@
-import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { __Props } from '../../../types/props'
 import styled from 'styled-components'
 import { __Colors, __Fonts, __Sizes } from '../../../assets/styles/types'
-import { Spacer } from '../Spacer'
-import { Statement } from '@babel/types'
 import { Sizes } from '../../../assets/styles/sizes'
-import { styledComponentConfig } from '../../GlobalStyleConfig'
 
 export namespace Shape {
   type ShapeType = 'circle' | 'square'

@@ -73,14 +73,14 @@ export namespace Container {
     },
   }))
 
-  const Left = styled.span({
-    verticalAlign: 'middle', // TODO: editable
-  })
-  const Right = styled.span({
-    verticalAlign: 'middle', // TODO: editable
-  })
-  const Top = styled.span({})
-  const Bottom = styled.span({})
-  const Front = styled.span({})
-  const Back = styled.span({})
+  // const Left = styled.span({
+  //   verticalAlign: 'middle', // TODO: editable
+  // })
+  // const Right = styled.span({
+  //   verticalAlign: 'middle', // TODO: editable
+  // })
+  // const Top = styled.span({})
+  // const Bottom = styled.span({})
+  // const Front = styled.span({})
+  // const Back = styled.span({})
 }

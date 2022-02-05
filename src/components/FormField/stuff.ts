@@ -1,5 +1,5 @@
 import { FormField } from '.'
-import { mapRanges, Range } from '../../lib/mapRanges'
+import { mapRanges, Range } from '../../utils/ranges.utils'
 import { InputValueType } from '../../types/types'
 
 type GetMatchImp = (v?: InputValueType, r?: Range) => FormField.Types.Match

@@ -1,31 +1,41 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
+    "outDir": "dist",
     "types": ["node", "react/next", "react-dom/next"],
+    "module": "esnext",
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "es6", "es2016", "es2017"],
+    "moduleResolution": "node",
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "module": "es6",
-    "moduleResolution": "node",
     "allowJs": false,
     "jsx": "react",
-    "target": "es6",
-    "declaration": false,
+    "declaration": true,
+    "declarationDir": "dist",
     "noLib": false,
     "suppressImplicitAnyIndexErrors": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
     "skipLibCheck": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
+    "noEmit": false,
+    "strict": true,
     "alwaysStrict": true,
     "strictNullChecks": true,
     "noImplicitReturns": true,
     "noImplicitAny": true,
     "strictPropertyInitialization": true,
-    "strictBindCallApply": true
+    "strictBindCallApply": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitThis": true
   },
-  "include": ["./src/**/*"]
+  "include": ["src"],
+  "exclude": [
+    "node_modules",
+    "src/**/*.test.tsx",
+    "src/**/*.stories.tsx",
+    "dist"
+  ]
 }

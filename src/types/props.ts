@@ -1,30 +1,29 @@
 import React from 'react'
 import { __Sizes } from '../assets/styles/types'
-import { ContainerProps } from '../components/.core/Container'
-import { RefWithCurrent } from './types'
+import { DangerInnerHTML, RefWithCurrent } from './types'
 
 export namespace __Props {
-  interface Default {
+  export interface Default {
     readonly size: keyof __Sizes
   }
 
-  interface Required {}
+  export interface Required {}
 
-  interface Optional extends HasChildren {}
+  export interface Optional extends HasChildren {}
 
-  interface HasStyleObject {
+  export interface HasStyleObject {
     style?: React.CSSProperties
   }
 
-  interface HasChildren {
+  export interface HasChildren {
     children?: React.ReactNode
   }
 
-  interface HasRef<T> {
+  export interface HasRef<T> {
     getRef?: RefWithCurrent<T>
   }
 
-  interface HasDangerHTML {
+  export interface HasDangerHTML {
     dangerouslySetInnerHTML?: DangerInnerHTML
   }
 }

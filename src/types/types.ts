@@ -1,3 +1,5 @@
+import { ComponentType, SVGProps } from 'react'
+
 export type Nullable<T> = T | null
 
 export type SVGType = ComponentType<SVGProps<SVGSVGElement>>

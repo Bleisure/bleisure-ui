@@ -1,5 +1,3 @@
-import { Fonts, FontSizes } from './fonts'
-
 export interface __Colors {
   readonly main: string
   readonly primary: string

@@ -1,9 +1,9 @@
-export default function easeInOutQuad(
-  currentTime,
-  startValue,
-  changes,
-  duration,
-): number {
+export const easeInOutQuad = (
+  currentTime: number,
+  startValue: number,
+  changes: number,
+  duration: number,
+): number => {
   currentTime /= duration * 0.5
   if (currentTime < 1)
     return (changes / 2) * currentTime * currentTime + startValue

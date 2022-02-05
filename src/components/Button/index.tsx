@@ -1,7 +1,7 @@
 import React, { HTMLAttributes } from 'react'
 import { __Props } from '../../types/props'
 import styled from 'styled-components'
-import { Colors, Contrasts } from '../../assets/styles/colors'
+import { Contrasts } from '../../assets/styles/colors'
 import { __Colors, __Fonts, __Sizes } from '../../assets/styles/types'
 import { FontSizes } from '../../assets/styles/fonts'
 import { Sizes } from '../../assets/styles/sizes'
@@ -100,3 +100,5 @@ export namespace Button {
     }),
   )
 }
+
+export default Button.Component

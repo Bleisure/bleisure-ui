@@ -75,7 +75,8 @@ export namespace Image {
   }
 
   const Image = styled.img<Props.Actual & State.Load>(
-    ({ size, imageLoaded }) => ({
+    // ({ size, imageLoaded }) => ({
+    () => ({
       position: 'relative',
       maxWidth: '100%',
       // opacity: imageLoaded ? 1 : 0,
