@@ -1,7 +1,7 @@
 {
   "tabWidth": 2,
   "useTabs": false,
-  "printWidth": 80,
+  "printWidth": 100,
   "singleQuote": true,
   "trailingComma": "all",
   "jsxBracketSameLine": false,
@@ -12,9 +12,7 @@
       "files": [".storybook/*"],
       "options": {
         "trailingComma": "es5",
-        "tabWidth": 4,
-        "semi": false,
-        "singleQuote": true
+        "tabWidth": 4
       }
     }
   ]

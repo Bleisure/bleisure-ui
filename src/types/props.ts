@@ -1,29 +1,48 @@
 import React from 'react'
-import { __Sizes } from '../assets/styles/types'
-import { DangerInnerHTML, RefWithCurrent } from './types'
+import { __Colors, __Fonts, __FontSizes, __FontWeights, __Sizes } from '../design/types'
+import { DangerInnerHTML, Merge, RefWithCurrent, Req } from '.'
 
-export namespace __Props {
-  export interface Default {
-    readonly size: keyof __Sizes
-  }
+export type Required<R = {}> = Readonly<Req<R>>
 
-  export interface Required {}
+export type Optional<O extends Object = {}> = Readonly<Partial<Merge<O, HasChildren>>>
 
-  export interface Optional extends HasChildren {}
+export type Default<D extends Object = {}> = Readonly<Merge<D, HasSize>>
 
-  export interface HasStyleObject {
-    style?: React.CSSProperties
-  }
+/**
+ * @R required
+ * @O optional
+ * @D default
+ */
+export type PropTypes<D, O, R> = Partial<D> & Partial<O> & Req<R>
 
-  export interface HasChildren {
-    children?: React.ReactNode
-  }
+export type Actual<R, D> = Merge<R, D>
 
-  export interface HasRef<T> {
-    getRef?: RefWithCurrent<T>
-  }
+export interface HasColor {
+  color: keyof __Colors
+}
 
-  export interface HasDangerHTML {
-    dangerouslySetInnerHTML?: DangerInnerHTML
-  }
+export interface HasSize {
+  size: keyof __Sizes
+}
+
+export interface HasTypoOptions {
+  fontFamily: keyof __Fonts
+  fontSize: keyof __FontSizes
+  fontWeight: keyof __FontWeights
+}
+
+export interface HasStyleObject {
+  style?: React.CSSProperties
+}
+
+export interface HasChildren {
+  children?: React.ReactNode
+}
+
+export interface HasRef<T> {
+  getRef?: RefWithCurrent<T>
+}
+
+export interface HasDangerHTML {
+  dangerouslySetInnerHTML?: DangerInnerHTML
 }
