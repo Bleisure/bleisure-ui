@@ -1,34 +1,34 @@
 import React from 'react'
-import { __Colors, __Fonts, __FontSizes, __FontWeights, __Sizes } from '../design/types'
 import { DangerInnerHTML, Merge, RefWithCurrent, Req } from '.'
+import { ColourName } from '../design/colors'
+import { FontFamilyName, FontSizeKey, FontThickness } from '../design/fonts'
+import { SizeKey } from '../design/sizes'
 
-export type Required<R = {}> = Readonly<Req<R>>
+// TODO: tests
+export type Exclude<T, K extends keyof T> = Omit<T, K>
 
-export type Optional<O extends Object = {}> = Readonly<Partial<Merge<O, HasChildren>>>
+// TODO: tests
+/**
+ * @description Overrides same properties from T to R
+ */
+export type Override<T, R> = keyof R extends keyof T ? Merge<Exclude<T, keyof R>, R> : never
 
-export type Default<D extends Object = {}> = Readonly<Merge<D, HasSize>>
+type ASD = 'a' | 'b'
+type DSA = 'a' | 'c'
 
 /**
+ * @D default
  * @R required
  * @O optional
- * @D default
  */
-export type PropTypes<D, O, R> = Partial<D> & Partial<O> & Req<R>
+export type PropTypes<D, R, O> = Partial<D> & Req<R> & Partial<O>
 
-export type Actual<R, D> = Merge<R, D>
-
-export interface HasColor {
-  color: keyof __Colors
+export interface HasColour {
+  colour: ColourName
 }
 
 export interface HasSize {
-  size: keyof __Sizes
-}
-
-export interface HasTypoOptions {
-  fontFamily: keyof __Fonts
-  fontSize: keyof __FontSizes
-  fontWeight: keyof __FontWeights
+  size: SizeKey
 }
 
 export interface HasStyleObject {

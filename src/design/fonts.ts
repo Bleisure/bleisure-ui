@@ -28,9 +28,9 @@ type FONT_SIZE_KEYS_TEST_SUITE = IsTrue<
   IfStrictEquals<UniqueArray<typeof fontSizeKeys>, typeof fontSizeKeys>
 >
 
-export type FontSizeKeys = typeof fontSizeKeys[number]
+export type FontSizeKey = typeof fontSizeKeys[number]
 
-export type FontSizeChart = Readonly<Record<FontSizeKeys, number>>
+export type FontSizeChart = Readonly<Record<FontSizeKey, number>>
 
 export const FontSizes: FontSizeChart = {
   p: 12,

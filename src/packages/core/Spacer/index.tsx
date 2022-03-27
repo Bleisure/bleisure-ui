@@ -1,39 +1,36 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Sizes } from '../../../design/sizes'
-import { __Sizes } from '../../../design/types'
 import * as P from '../../../types/props'
+import Sizable, { SizableProps } from '../../modifiers/Sizable'
 
 export namespace Spacer {
-  export namespace Props {
-    export type Optional = P.Optional<{
-      /**
-       * @description "null" !== null, so the !(spaceDirection = null) returns false
-       */
-      spaceDirection: 'x' | 'y' | 'null'
-    }>
-
-    type Required = P.Required
-
-    type Default = P.Default<{
-      space: number
-    }>
-
-    export type Actual = P.Actual<Required, Default>
-
-    export type Props = P.PropTypes<Required, Optional, Default>
-
-    export const defaultProps: Default = {
-      size: 'base',
-      space: 20,
-    }
+  export interface OptionalProps {
+    /**
+     * @description "null" !== null, so the !(spaceDirection = null) returns false
+     */
+    spaceDirection: 'x' | 'y' | 'null'
   }
 
-  export const Component = (props: Props.Props) => (
-    <Styled {...{ ...Props.defaultProps, ...props }} />
+  interface DefaultProps {
+    space: number
+  }
+
+  export interface PropTypes extends DefaultProps, OptionalProps {}
+
+  type ActualProps = P.Override<PropTypes, DefaultProps>
+
+  export const defaultProps: DefaultProps = {
+    space: 20,
+  }
+
+  export const Component = ({ ...props }: Readonly<PropTypes>) => (
+    <Sizable render={(size) => <Styled {...{ ...size, ...defaultProps, ...props }} />} />
   )
 
-  export const Styled = styled.span<Props.Actual & Props.Optional>(
+  interface StyledProps extends ActualProps, SizableProps {}
+
+  export const Styled = styled.span<StyledProps>(
     () => ({
       display: 'block',
       position: 'relative',

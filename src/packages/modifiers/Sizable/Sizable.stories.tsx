@@ -1,17 +1,15 @@
 import React from 'react'
 import { Meta } from '@storybook/react'
-import { Text } from '../Text'
-import { Spacer } from '.'
-import { Container } from '../Container'
+import { Text } from '../../core/Text'
+import Sizable, { SizableProps } from '.'
+import { Container } from '../../core/Container'
 
 export default {
   title: 'Core/Spacer',
-  component: Spacer.Component,
-  description: "Parent must hold it's position relative (relative parent contains this substrate)",
-  args: Spacer.Props.defaultProps,
+  component: Sizable,
 } as Meta
 
-export const Separator = (args: Spacer.Props.Props) => (
+export const Separator = (args: SizableProps) => (
   <Container.Component
     after={{ x: <Text.Component {...args}>Text after spacer</Text.Component> }}
     before={{

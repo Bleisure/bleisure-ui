@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import * as P from '../../../types/props'
 import styled from 'styled-components'
-import { __Colors, __Fonts, __Sizes } from '../../../design/types'
 import { Sizes } from '../../../design/sizes'
 
 export namespace Shape {
@@ -9,7 +8,6 @@ export namespace Shape {
 
   export namespace Props {
     export type Optional = P.Optional<{
-      ignorePaddings: boolean
       height: number
     }>
 
