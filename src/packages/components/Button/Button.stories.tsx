@@ -1,26 +1,18 @@
 import React from 'react'
 import { Meta } from '@storybook/react'
 // import EventIcon from '../../../assets/icons/create-event.svg'
-import { Icon } from '../../core/Icon'
+// import { Icon } from '../../core/Icon'
 import { Button } from '.'
+import Demo from '../../core/demo'
 
 export default {
   title: 'Components/Button',
   component: Button.Component,
-  args: {
-    ...Button.Props.defaultProps,
-    size: 'base',
-  },
-} as Meta<Button.Props.Props>
+  args: Button.defaultProps,
+} as Meta<Button.PropTypes>
 
-export const Example = (args: Button.Props.Props) => (
-  <Button.Component
-    color="primary"
-    // after={{
-    //   x: <Icon.Component {...args} src={''} size="m" />,
-    // }}
-    {...args}
-  >
-    Создать событие
-  </Button.Component>
+export const Example = (args: Button.PropTypes) => (
+  <Demo width={300}>
+    <Button.Component {...args}>Создать событие</Button.Component>
+  </Demo>
 )

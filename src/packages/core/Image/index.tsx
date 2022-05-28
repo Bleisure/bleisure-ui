@@ -1,8 +1,10 @@
 import React, { useState, useMemo } from 'react'
 import styled from 'styled-components'
+import Scale from '../../../design/scale'
 import * as P from '../../../types/props'
 
 export namespace Image {
+  export const ComponentName = 'Image'
   interface Sources {
     small?: string
     medium: string
@@ -14,31 +16,25 @@ export namespace Image {
     portrait?: T
   }
 
-  export namespace Props {
-    type Optional = P.Optional
+  type PartialProps = Partial<{
+    sources: Orientation<Sources> | string
+  }>
 
-    type Required = P.Required<{
-      sources: Orientation<Sources> | string
-    }>
+  export interface DefaultProps extends Scale.Property {}
 
-    type Default = P.Default
+  export interface PropTypes extends Partial<DefaultProps>, PartialProps {}
 
-    export type Actual = P.Actual<Required, Default>
+  type ActualProps = P.Exclude<P.Override<PropTypes, DefaultProps>, 'sources'>
 
-    export interface Props extends P.PropTypes<Required, Optional, Default> {}
-
-    export const defaultProps: Default = {
-      size: 'base',
-    }
+  export const defaultProps: DefaultProps = {
+    scale: Scale.BASE,
   }
 
-  namespace State {
-    export interface Load {
-      readonly imageLoaded: boolean
-    }
+  interface LoadingState {
+    imageLoaded: boolean
   }
 
-  const initialLoadState: State.Load = {
+  const initialLoadState: LoadingState = {
     imageLoaded: false,
   }
 
@@ -60,13 +56,17 @@ export namespace Image {
     return orientation
   }
 
-  export const Component = ({ sources: source, ...props }: Props.Props) => {
-    const actualProps = {
-      ...Props.defaultProps,
+  export const Component = ({ sources: source, ...props }: PropTypes) => {
+    const actualProps: ActualProps = {
+      ...defaultProps,
       ...props,
     }
 
-    const [loadState, setLoadState] = useState<State.Load>(initialLoadState)
+    // TODO: start using this
+    const [loadState, setLoadState] = useState<LoadingState>(initialLoadState)
+
+    // TODO return something but null
+    if (!source) return null
 
     // TODO вынести
     const sources = useMemo<Orientation<Sources>>(() => {
@@ -86,16 +86,17 @@ export namespace Image {
       return source
     }, [source])
 
+    const { landscape } = useMemo(() => orientationToString(sources), [source])
+
     // TODO: Нужен ли задел для ориентации изображения?
     return (
       <div>
-        <Image
-          {...{ ...actualProps, ...loadState, sources }}
+        <Styled
           className="source"
           onLoad={() => setLoadState({ imageLoaded: true })}
           alt="picture"
           src={sources.landscape.medium}
-          srcSet={orientationToString(sources).landscape} // TODO: цифры взяты из головы
+          srcSet={landscape} // TODO: цифры взяты из головы
           sizes="(max-width: 480px): 440px,
           (max-width: 720px): 700px,
           1280px"
@@ -104,44 +105,8 @@ export namespace Image {
     )
   }
 
-  const Image = styled.img<Props.Actual & State.Load>(
-    // ({ size, imageLoaded }) => ({
-    () => ({
-      position: 'relative',
-      maxWidth: '100%',
-      // opacity: imageLoaded ? 1 : 0,
-      // transition: 'opacity 0.1s',
-    }),
-  )
-}
-
-/**
- * @DOCS
- */
-
-{
-  /* <picture>
-
-   <source media="(orientation: landscape)"
-             
-      srcset="land-small-car-image.jpg 200w,
-              land-medium-car-image.jpg 600w,
-              land-large-car-image.jpg 1000w"
-             
-      sizes="(min-width: 700px) 500px,
-             (min-width: 600px) 400px,
-             100vw">
-     
-   <source media="(orientation: portrait)"
-             
-      srcset="port-small-car-image.jpg 700w,
-              port-medium-car-image.jpg 1200w,
-              port-large-car-image.jpg 1600w"
-             
-      sizes="(min-width: 768px) 700px,
-             (min-width: 1024px) 600px,
-             500px">
-     
-   <img src="land-medium-car-image.jpg" alt="Car">
-</picture> */
+  const Styled = styled.img({
+    position: 'relative',
+    maxWidth: '100%',
+  })
 }

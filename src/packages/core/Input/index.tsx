@@ -1,36 +1,45 @@
 import React, { InputHTMLAttributes } from 'react'
 import styled from 'styled-components'
-import { Colors } from '../../../design/colors'
-import { Fonts, FontSizes, FontWeights } from '../../../design/fonts'
-import { Sizes } from '../../../design/sizes'
-import { __Colors, __Fonts, __FontSizes, __FontWeights } from '../../../design/types'
+import Colour from '../../../design/colours'
+import { Fonts, FontSizes, FontWeights, HasTypeOptions } from '../../../design/fonts'
 import * as P from '../../../types/props'
-import { Merge } from '../../../types'
-
 export namespace Input {
-  export namespace Props {
-    type Optional = P.Optional<{
-      inputProps: InputHTMLAttributes<HTMLInputElement>
-    }>
+  export const ComponentName = 'Input'
 
-    type Required = P.Required
+  type PartialProps = Partial<{
+    inputProps: InputHTMLAttributes<HTMLInputElement>
+  }>
 
-    export type Default = P.Default<Merge<P.HasTypoOptions, P.HasColor>>
+  export interface DefaultProps extends HasTypeOptions, Colour.Property {}
 
-    export type Actual = P.Actual<Required, Default>
+  export interface PropTypes
+    extends Partial<DefaultProps>,
+      PartialProps,
+      P.HasRef<HTMLInputElement> {}
 
-    export interface Props
-      extends P.PropTypes<Required, Optional, Default>,
-        P.HasRef<HTMLInputElement> {}
+  export type ActualProps = P.Exclude<P.Override<PropTypes, DefaultProps>, 'getRef' | 'inputProps'>
 
-    export const defaultProps: Default = {
-      size: 'base',
-      color: 'main',
-      fontFamily: 'main',
-      fontSize: 'p',
-      fontWeight: 'regular',
-    }
+  export const defaultProps: DefaultProps = {
+    colour: Colour.MAIN,
+    fontFamily: 'main',
+    fontSize: 'p',
+    fontWeight: 'regular',
   }
+
+  export const Component = ({ getRef, inputProps, ...props }: PropTypes) => {
+    const actualProps: ActualProps = {
+      ...defaultProps,
+      ...props,
+    }
+
+    return (
+      <Styled.Label {...actualProps}>
+        <Styled.Input ref={getRef} {...inputProps} />
+      </Styled.Label>
+    )
+  }
+
+  Component.displayName = ComponentName
 
   namespace Styled {
     export const Input = styled.input(({}) => ({
@@ -41,31 +50,18 @@ export namespace Input {
       width: '100%',
     }))
 
-    export const Label = styled.label<Props.Actual>(
-      ({ size, color, fontFamily, fontSize, fontWeight }) => ({
+    export const Label = styled.label<ActualProps>(
+      ({ colour, fontFamily, fontSize, fontWeight }) => ({
         width: '100%',
         height: '100%',
         display: 'grid',
         '& > input': {
-          color: Colors[color],
+          color: Colour.pallete[colour],
           fontFamily: Fonts[fontFamily],
-          fontSize: FontSizes[fontSize] * Sizes[size],
+          fontSize: FontSizes[fontSize],
           fontWeight: FontWeights[fontWeight],
         },
       }),
-    )
-  }
-
-  export const Component = ({ getRef, inputProps, ...props }: Props.Props) => {
-    const actualProps = {
-      ...Props.defaultProps,
-      ...props,
-    }
-
-    return (
-      <Styled.Label {...actualProps}>
-        <Styled.Input ref={getRef} {...inputProps} />
-      </Styled.Label>
     )
   }
 }

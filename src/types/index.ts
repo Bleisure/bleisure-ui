@@ -1,5 +1,5 @@
 import { ComponentType, SVGProps } from 'react'
-import { IfStrictEquals, IsFalse, IsTrue } from './check'
+import { IfStrictEquals, ToBeFalse, ToBeTrue } from './check'
 
 export type Req<R> = Required<R>
 
@@ -31,10 +31,8 @@ export type UniqueArray<T> = T extends readonly [infer X, ...infer Rest]
     T
 
 type UNIQUE_ARRAY_TEST_SUITE = [
-  // True if contains only unique values
-  IsTrue<IfStrictEquals<UniqueArray<'A' | 'B' | 'C'>, 'A' | 'B' | 'C'>>,
-  // False if contains duplicates
-  IsFalse<IfStrictEquals<UniqueArray<'A' | 'B' | 'C'>, 'A' | 'B' | 'B'>>,
+  ToBeTrue<'Only unique values', IfStrictEquals<UniqueArray<'A' | 'B' | 'C'>, 'A' | 'B' | 'C'>>,
+  ToBeFalse<'Duplicated values', IfStrictEquals<UniqueArray<'A' | 'B' | 'C'>, 'A' | 'B' | 'B'>>,
 ]
 
 type InArray<T, X> =

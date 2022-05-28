@@ -1,48 +1,48 @@
 import React from 'react'
 import styled, { css, CSSProperties } from 'styled-components'
-import { Sizes } from '../../../design/sizes'
-import { Accents, Colors, Contrasts } from '../../../design/colors'
-import { __Colors, __Sizes } from '../../../design/types'
-import { Background } from '../Background'
+import Colour from '../../../design/colours'
+import Scale from '../../../design/scale'
 import * as P from '../../../types/props'
 
 /**
  * @description A parent must be relative
  */
 export namespace Substrate {
+  export const ComponentName = 'Substrate'
+
   type Corners = 'smooth' | 'strong'
 
-  export namespace Props {
-    export type Optional = P.Optional<{
-      corners: Corners
-    }>
+  type PartialProps = Partial<{
+    borderType: Corners
+  }>
 
-    type Required = P.Required
+  interface DefaultProps extends Colour.Property, Scale.Property {}
 
-    type Default = P.Default<P.HasColor>
+  export interface PropTypes extends Partial<DefaultProps>, PartialProps {}
 
-    export type Actual = P.Actual<Required, Default>
+  type ActualProps = P.Exclude<P.Override<PropTypes, DefaultProps>, 'borderType'>
 
-    export interface Props extends P.PropTypes<Required, Optional, Default> {}
-
-    export const defaultProps: Default = {
-      size: 'base',
-      color: 'primary',
-    }
+  export const defaultProps: DefaultProps = {
+    scale: Scale.BASE,
+    colour: Colour.PRIMARY,
   }
 
-  export const Component = (props: Props.Props) => {
-    const actualProps = {
-      ...Props.defaultProps,
+  export const Component = (props: Readonly<PropTypes>) => {
+    const actualProps: ActualProps = {
+      ...defaultProps,
       ...props,
     }
-    return <Div {...actualProps} />
+    return <StyledDiv {...actualProps} />
   }
 
-  const Div = styled.div.withConfig({
+  Component.displayName = ComponentName
+
+  interface StyledDivProps extends ActualProps, PartialProps {}
+
+  const StyledDiv = styled.div.withConfig({
     shouldForwardProp: (prop, defaultValidatorFn) =>
-      !['color', 'size'].includes(prop) && defaultValidatorFn(prop),
-  })<Props.Actual & Props.Optional>(({ corners, size, color }) => ({
+      !['colour'].includes(prop) && defaultValidatorFn(prop),
+  })<StyledDivProps>(({ borderType, colour, scale }) => ({
     position: 'absolute',
     boxSizing: 'border-box',
     top: 0,
@@ -50,10 +50,10 @@ export namespace Substrate {
     width: '100%',
     height: '100%',
     zIndex: -1,
-    borderRadius: corners === 'smooth' ? 15 * Sizes[size] : 0,
+    borderRadius: borderType === 'smooth' ? 15 * Scale.get[scale] : 0,
     transition: 'all 0.1s ease-in-out',
-    borderWidth: 2 * Sizes[size],
-    backgroundColor: Colors[color],
+    borderWidth: 2 * Scale.get[scale],
+    backgroundColor: Colour.pallete[colour],
     borderColor: 'transparent',
     borderStyle: 'solid',
     overflow: 'hidden',
@@ -72,15 +72,23 @@ export namespace Substrate {
 
   export namespace Styled {
     export namespace Effects {
-      export const Basic = css<Props.Actual>(({ size, color }) => ({
-        [Div]: {
-          boxShadow: `0 0 ${46 * Sizes[size]}px -${18 * Sizes[size]}px ${Colors[color]}`,
+      export interface BasicProps extends Scale.Property, Colour.Property {}
+
+      export const Basic = css<BasicProps>(({ scale, colour }) => ({
+        [StyledDiv]: {
+          boxShadow: `0 0 ${46 * Scale.get[scale]}px -${18 * Scale.get[scale]}px ${
+            Colour.pallete[colour]
+          }`,
         },
-        [`&:hover ${Div}`]: {
-          boxShadow: `0 0 ${40 * Sizes[size]}px -${12 * Sizes[size]}px ${Colors[color]}`,
+        [`&:hover ${StyledDiv}`]: {
+          boxShadow: `0 0 ${40 * Scale.get[scale]}px -${12 * Scale.get[scale]}px ${
+            Colour.pallete[colour]
+          }`,
         },
-        [`&:active ${Div}`]: {
-          boxShadow: `0 0 ${36 * Sizes[size]}px -${15 * Sizes[size]}px ${Colors[color]}`,
+        [`&:active ${StyledDiv}`]: {
+          boxShadow: `0 0 ${36 * Scale.get[scale]}px -${15 * Scale.get[scale]}px ${
+            Colour.pallete[colour]
+          }`,
           filter: 'brightness(1.05)',
           transform: 'scale(0.99)',
           backfaceVisibility: 'hidden',
@@ -90,27 +98,35 @@ export namespace Substrate {
 
     // TODO: replace this reactions to component that triggers them
     export namespace Reactions {
-      export const Focus = css<Props.Actual>(({ size, color }) => ({
-        [`&:focus-within ${Div}`]: {
-          borderColor: `${Colors[Accents[color]]}`,
-          boxShadow: `0 0 ${40 * Sizes[size]}px -${15 * Sizes[size]}px ${Colors[Accents[color]]}11`,
+      export interface FocusProps extends Scale.Property, Colour.Property {}
+
+      export const Focus = css<ActualProps>(({ scale, colour }) => ({
+        [`&:focus-within ${StyledDiv}`]: {
+          borderColor: `${Colour.pallete[Colour.accents[colour]]}`,
+          boxShadow: `0 0 ${40 * Scale.get[scale]}px -${15 * Scale.get[scale]}px ${
+            Colour.pallete[Colour.accents[colour]]
+          }11`,
         },
       }))
 
-      export const KeyPress = css<Props.Actual>(({ color }) => ({
-        [`${Div}::after`]: {
-          backgroundColor: `${Colors[Accents[color]]}22`,
+      export interface KeyPressProps extends Colour.Property {}
+
+      export const KeyPress = css<ActualProps>(({ colour }) => ({
+        [`${StyledDiv}::after`]: {
+          backgroundColor: `${Colour.pallete[Colour.accents[colour]]}22`,
           transition: '0s',
         },
       }))
 
       export const Matching = (properties: CSSProperties) =>
-        css<Props.Actual>(({ color }) => {
+        css<ActualProps>(({ colour }) => {
           return {
-            [`${Div}::after`]: {
+            [`${StyledDiv}::after`]: {
               opacity: 0,
+              // Need to hold opacity there,
+              // Other properties would be overwritten.
               ...properties,
-              backgroundColor: Colors[Accents[color]],
+              backgroundColor: Colour.pallete[Colour.accents[colour]],
               transition: '0.3s',
               visibility: 'visible',
             },

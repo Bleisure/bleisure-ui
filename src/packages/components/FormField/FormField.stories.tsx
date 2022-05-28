@@ -7,22 +7,29 @@ import { Spacer } from '../../core/Spacer'
 export default {
   title: 'Components/FormField',
   component: FormField.Component,
-  args: FormField.Props.defaultProps,
+  args: FormField.defaultProps,
 } as Meta
 
-export const MatchRules = (args: FormField.Props.Props) => (
+export const MatchRules = (args: FormField.PropTypes) => (
   <>
     <Spacer.Component spaceDirection="y">
       <Text.Component>{`The rules are: availableLength: { from: 5, to: 20 }`}</Text.Component>
     </Spacer.Component>
     <FormField.Component
-      inputProps={{ defaultValue: 'Text' }}
+      Input={{
+        inputProps: { defaultValue: 'Text' },
+      }}
       rules={{ availableLength: { from: 5, to: 20 } }}
       {...args}
     />
   </>
 )
 
-export const OnChangeReaction = (args: FormField.Props.Props) => (
-  <FormField.Component inputProps={{ defaultValue: 'Input any key to reproduce' }} {...args} />
+export const OnChangeReaction = (args: FormField.PropTypes) => (
+  <FormField.Component
+    Input={{
+      inputProps: { defaultValue: 'Input any key to reproduce' },
+    }}
+    {...args}
+  />
 )

@@ -8,10 +8,10 @@ export default {
   title: 'Core/Spacer',
   component: Spacer.Component,
   description: "Parent must hold it's position relative (relative parent contains this substrate)",
-  args: Spacer.Props.defaultProps,
+  args: Spacer.defaultProps,
 } as Meta
 
-export const Separator = (args: Spacer.Props.Props) => (
+export const Separator = (args: Spacer.PropTypes) => (
   <Container.Component
     after={{ x: <Text.Component {...args}>Text after spacer</Text.Component> }}
     before={{
@@ -23,7 +23,7 @@ export const Separator = (args: Spacer.Props.Props) => (
   </Container.Component>
 )
 
-export const SpaceCreator = (args: Spacer.Props.Props) => (
+export const SpaceCreator = (args: Spacer.PropTypes) => (
   <Spacer.Component {...args}>
     <Text.Component {...args}>Space around text</Text.Component>
   </Spacer.Component>

@@ -1,34 +1,38 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Sizes } from '../../../design/sizes'
+import Scale from '../../../design/scale'
 import * as P from '../../../types/props'
-import Sizable, { SizableProps } from '../../modifiers/Sizable'
 
 export namespace Spacer {
-  export interface OptionalProps {
+  export const ComponentName = 'Spacer'
+
+  type PartialProps = Partial<{
     /**
      * @description "null" !== null, so the !(spaceDirection = null) returns false
      */
     spaceDirection: 'x' | 'y' | 'null'
-  }
+  }>
 
-  interface DefaultProps {
+  export type DefaultProps = Scale.Property & {
     space: number
   }
 
-  export interface PropTypes extends DefaultProps, OptionalProps {}
+  export interface PropTypes extends Partial<DefaultProps>, PartialProps, P.HasChildren {}
 
   type ActualProps = P.Override<PropTypes, DefaultProps>
 
   export const defaultProps: DefaultProps = {
     space: 20,
+    scale: Scale.BASE,
   }
 
-  export const Component = ({ ...props }: Readonly<PropTypes>) => (
-    <Sizable render={(size) => <Styled {...{ ...size, ...defaultProps, ...props }} />} />
+  export const Component = (props: Readonly<PropTypes>) => (
+    <Styled {...{ ...defaultProps, ...props }} />
   )
 
-  interface StyledProps extends ActualProps, SizableProps {}
+  Component.displayName = ComponentName
+
+  interface StyledProps extends ActualProps {}
 
   export const Styled = styled.span<StyledProps>(
     () => ({
@@ -38,19 +42,19 @@ export namespace Spacer {
       // And import here
       boxSizing: 'border-box',
     }),
-    ({ space, size, spaceDirection }) =>
+    ({ space, scale, spaceDirection }) =>
       !spaceDirection && {
-        padding: space * Sizes[size],
+        padding: space * Scale.get[scale],
       },
-    ({ space, size, spaceDirection }) =>
+    ({ space, scale, spaceDirection }) =>
       spaceDirection === 'y' && {
-        paddingTop: space * Sizes[size],
-        paddingBottom: space * Sizes[size],
+        paddingTop: space * Scale.get[scale],
+        paddingBottom: space * Scale.get[scale],
       },
-    ({ space, size, spaceDirection }) =>
+    ({ space, scale, spaceDirection }) =>
       spaceDirection === 'x' && {
-        paddingLeft: space * Sizes[size],
-        paddingRight: space * Sizes[size],
+        paddingLeft: space * Scale.get[scale],
+        paddingRight: space * Scale.get[scale],
       },
   )
 }

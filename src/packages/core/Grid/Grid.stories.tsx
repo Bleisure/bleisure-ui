@@ -7,12 +7,12 @@ export default {
   title: 'Core/Grid',
   component: Grid.Container.Component,
   args: {
-    ...Grid.Container.Props.defaultProps,
+    ...Grid.Container.defaultProps,
     columns: 3,
   },
 } as Meta
 
-export const Example = (args: Grid.Container.Props.Props & Grid.Item.Props.Props) => (
+export const Example = (args: Grid.Container.PropTypes & Grid.Item.PropTypes) => (
   <div
     style={{
       display: 'block',

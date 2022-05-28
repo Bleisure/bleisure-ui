@@ -1,18 +1,25 @@
 import { UniqueArray } from '../types'
-import { IfStrictEquals, IsTrue } from '../types/check'
+import { IfStrictEquals, ToBeTrue } from '../types/check'
 
 /**
  * @FONT_FAMILY
  */
 export const fontFamilies = ['main', 'additional'] as const
 
-type FONT_FAMILIES_KEYS_TEST_SUITE = IsTrue<
-  IfStrictEquals<UniqueArray<typeof fontFamilies>, typeof fontFamilies>
->
+type FONT_FAMILIES_KEYS_TEST_SUITE = [
+  ToBeTrue<
+    'Unique font families',
+    IfStrictEquals<UniqueArray<typeof fontFamilies>, typeof fontFamilies>
+  >,
+]
 
 export type FontFamilyName = typeof fontFamilies[number]
 
 export type FontFamily = Readonly<Record<FontFamilyName, string>>
+
+export interface HasFontFamily {
+  fontFamily: FontFamilyName
+}
 
 export const Fonts: FontFamily = {
   main: 'Gilroy',
@@ -24,13 +31,20 @@ export const Fonts: FontFamily = {
  */
 export const fontSizeKeys = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as const
 
-type FONT_SIZE_KEYS_TEST_SUITE = IsTrue<
-  IfStrictEquals<UniqueArray<typeof fontSizeKeys>, typeof fontSizeKeys>
->
+type FONT_SIZE_KEYS_TEST_SUITE = [
+  ToBeTrue<
+    'Unique font-size keys',
+    IfStrictEquals<UniqueArray<typeof fontSizeKeys>, typeof fontSizeKeys>
+  >,
+]
 
 export type FontSizeKey = typeof fontSizeKeys[number]
 
 export type FontSizeChart = Readonly<Record<FontSizeKey, number>>
+
+export interface HasFontSize {
+  fontSize: FontSizeKey
+}
 
 export const FontSizes: FontSizeChart = {
   p: 12,
@@ -57,13 +71,20 @@ export const fontThicknessLevel = [
   'black',
 ] as const
 
-type FONT_WEIGHT_TEST_SUITE = IsTrue<
-  IfStrictEquals<UniqueArray<typeof fontThicknessLevel>, typeof fontThicknessLevel>
->
+type FONT_WEIGHT_TEST_SUITE = [
+  ToBeTrue<
+    'Unique thikness level',
+    IfStrictEquals<UniqueArray<typeof fontThicknessLevel>, typeof fontThicknessLevel>
+  >,
+]
 
 export type FontThicknessLevel = typeof fontThicknessLevel[number]
 
 export type FontThickness = Readonly<Record<FontThicknessLevel, number>>
+
+export interface HasFontWeight {
+  fontWeight: FontThicknessLevel
+}
 
 export const FontWeights: FontThickness = {
   thin: 100,
@@ -75,4 +96,8 @@ export const FontWeights: FontThickness = {
   bold: 700,
   extraBold: 800,
   black: 900,
+}
+
+export interface HasTypeOptions extends HasFontSize, HasFontFamily, HasFontWeight {
+  fontSize: FontSizeKey
 }

@@ -1,60 +1,74 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import * as P from '../../../types/props'
 import styled from 'styled-components'
-import { Sizes } from '../../../design/sizes'
+import Scale from '../../../design/scale'
 
 export namespace Shape {
+  export const ComponentName = 'Shape'
+
   type ShapeType = 'circle' | 'square'
 
-  export namespace Props {
-    export type Optional = P.Optional<{
-      height: number
-    }>
-
-    type Required = P.Required<{
-      width: number
-    }>
-
-    type Default = P.Default<{
-      shape: ShapeType
-    }>
-
-    export type Actual = P.Actual<Required, Default>
-
-    export interface Props extends P.PropTypes<Required, Optional, Default> {}
-
-    export const defaultProps: Default = {
-      size: 'base',
-      shape: 'circle',
-    }
+  export interface DefaultProps extends Scale.Property {
+    shapeType: ShapeType
   }
 
-  export const Component = ({ children, ...props }: Props.Props) => {
-    const actualProps = {
-      ...Props.defaultProps,
+  export interface PropTypes extends Partial<DefaultProps>, P.HasChildren {
+    width: number
+    height?: number
+  }
+
+  type ActualProps = P.Exclude<P.Override<PropTypes, DefaultProps>, 'children'>
+
+  export const defaultProps: DefaultProps = {
+    scale: Scale.BASE,
+    shapeType: 'circle',
+  }
+
+  export const Component = ({ children, ...props }: PropTypes) => {
+    const actualProps: ActualProps = {
+      ...defaultProps,
       ...props,
     }
 
+    const { scale, shapeType } = actualProps
+
+    const { width, height } = useMemo(() => {
+      const { width, height = width } = actualProps
+
+      return {
+        width: width * Scale.get[scale],
+        height: height * Scale.get[scale],
+      }
+    }, [scale])
+
+    const borderRadius = useMemo(() => (shapeType === 'circle' ? '50%' : '0'), [shapeType])
+
     return (
-      <Styled {...{ ...actualProps }}>
+      <Styled {...{ width, height, borderRadius }}>
         <Alignment>{children}</Alignment>
       </Styled>
     )
   }
 
-  const Styled = styled.div<Props.Actual & Props.Optional>(
-    ({ shape, width, height = width, size }) => ({
-      position: 'relative',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: shape === 'circle' ? '50%' : 0,
-      width: width * Sizes[size],
-      height: height * Sizes[size],
-      overflow: 'hidden',
-      transition: '0.3s cubic-bezier(.5,.45,.17,1)',
-    }),
-  )
+  Component.displayName = ComponentName
+
+  interface StyledProps {
+    width: number
+    height: number
+    borderRadius: string
+  }
+
+  const Styled = styled.div<StyledProps>(({ width, height, borderRadius }) => ({
+    display: 'flex',
+    position: 'relative',
+    width,
+    height,
+    borderRadius,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+    transition: '0.3s cubic-bezier(.5,.45,.17,1)',
+  }))
 
   // TODO надо ли это??
   const Alignment = styled.div(() => ({

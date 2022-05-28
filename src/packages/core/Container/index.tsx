@@ -1,71 +1,66 @@
 import React, { ReactNode } from 'react'
 import styled from 'styled-components'
-import { __Colors, __Fonts, __Sizes } from '../../../design/types'
 import { Spacer } from '../Spacer'
 import * as P from '../../../types/props'
+import Scale from '../../../design/scale'
 
 export namespace Container {
+  export const ComponentName = 'Container'
+
   type DimensionType = { [key in 'x' | 'y' | 'z']?: ReactNode }
 
-  export namespace Props {
-    type Required = P.Required
+  type PartialProps = Partial<{
+    before: DimensionType
+    after: DimensionType
+    [Spacer.ComponentName]: Spacer.PropTypes
+  }> &
+    P.HasChildren
 
-    type Optional = P.Optional<{
-      before?: DimensionType
-      after?: DimensionType
-    }>
+  export interface DefaultProps extends Scale.Property {}
 
-    type Default = P.Default
+  export interface PropTypes extends Partial<DefaultProps>, PartialProps {}
 
-    export type Actual = P.Actual<Required, Default>
+  export type ActualProps = P.Exclude<P.Override<PropTypes, DefaultProps>, 'Spacer'>
 
-    export interface Props extends P.PropTypes<Required, Optional, Default>, Spacer.Props.Props {}
-
-    export const defaultProps: Default = {
-      size: 'base',
-    }
-
-    // TODO как проверить что все проперти указаны
-    export const createScope = <T extends Props>(props: T): { [K in keyof Props]: Props[K] } => {
-      const { after, before, children, size, space, spaceDirection } = props
-      return {
-        after,
-        before,
-        children,
-        size,
-        space,
-        spaceDirection,
-      }
-    }
+  export const defaultProps: DefaultProps = {
+    scale: Scale.BASE,
   }
 
-  export const Component = ({ before, after, children, ...props }: Props.Props) => {
-    const actualProps = {
-      ...Props.defaultProps,
+  export const Component = ({
+    Spacer: spacerProps,
+    before,
+    after,
+    children,
+    ...props
+  }: PropTypes) => {
+    const actualProps: ActualProps = {
+      ...defaultProps,
       ...props,
     }
 
     return (
-      <Wrapper {...actualProps}>
+      <Wrapper>
         {before?.z}
         {before?.y}
-        {before?.y && <Spacer.Component {...actualProps} spaceDirection="y" />}
-        <Row {...actualProps}>
+        {before?.y && <Spacer.Component spaceDirection="y" {...spacerProps} />}
+        <Row>
           {before?.x}
-          {before?.x && <Spacer.Component {...actualProps} spaceDirection="x" />}
+          {before?.x && <Spacer.Component spaceDirection="x" {...spacerProps} />}
           {children}
-          {after?.x && <Spacer.Component {...actualProps} spaceDirection="x" />}
+          {after?.x && <Spacer.Component spaceDirection="x" {...spacerProps} />}
           {after?.x}
         </Row>
-        {after?.y && <Spacer.Component {...actualProps} spaceDirection="y" />}
+        {after?.y && <Spacer.Component spaceDirection="y" {...spacerProps} />}
         {after?.y}
         {after?.z}
       </Wrapper>
     )
   }
 
-  const Wrapper = styled.div<Props.Actual>(({}) => ({}))
-  const Row = styled.div<Props.Actual>(({}) => ({
+  Component.displayName = ComponentName
+
+  const Wrapper = styled.div(({}) => ({}))
+  const Row = styled.div(({}) => ({
     display: 'inline-block',
     verticalAlign: 'middle',
     '> *': {

@@ -5,7 +5,7 @@ import { Input } from '.'
 export default {
   title: 'Core/Input',
   component: Input.Component,
-  args: Input.Props.defaultProps,
+  args: Input.defaultProps,
 } as Meta
 
-export const Example = (args: Input.Props.Props) => <Input.Component {...args} />
+export const Example = (args: Input.PropTypes) => <Input.Component {...args} />

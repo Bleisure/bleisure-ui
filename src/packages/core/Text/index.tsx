@@ -1,23 +1,15 @@
-import React, { ReactNode, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import * as P from '../../../types/props'
 import styled from 'styled-components'
-import { Colours, Contrasts } from '../../../design/colors'
-import {
-  FontFamilyName,
-  Fonts,
-  FontSizeKey,
-  FontSizes,
-  FontThicknessLevel,
-  FontWeights,
-} from '../../../design/fonts'
-import { Sizes } from '../../../design/sizes'
+import Colour from '../../../design/colours'
+import { Fonts, FontSizes, FontWeights, HasTypeOptions } from '../../../design/fonts'
 import { Merge } from '../../../types'
-import { doesNotExist, isEmptyArray } from '../../../utils/array.utils'
-import { isStringArray, join } from '../../../utils/string.utils'
-import Sizable, { SizableProps } from '../../modifiers/Sizable'
-import { IfStrictEquals, IsTrue } from '../../../types/check'
-
+import { exist, isEmptyArray } from '../../../utils/array.utils'
+import { isStringArray } from '../../../utils/string.utils'
+import { string } from 'fp-ts'
 export namespace Text {
+  export const ComponentName = 'Text'
+
   type Customizer = Array<
     Merge<
       Partial<ActualProps>,
@@ -27,72 +19,88 @@ export namespace Text {
     >
   >
 
-  export interface OptionalProps extends P.HasChildren {
+  export type PartialProps = P.HasChildren
+
+  export interface DefaultProps extends Colour.Property, HasTypeOptions {
     customize: Customizer
   }
 
-  export interface DefaultProps extends P.HasColour {
-    fontFamily: FontFamilyName
-    fontSize: FontSizeKey
-    fontWeight: FontThicknessLevel
-  }
+  export interface PropTypes extends Partial<DefaultProps>, PartialProps {}
 
-  export interface PropTypes extends Partial<DefaultProps>, Partial<OptionalProps> {}
-
-  type ExcludedProps = 'customize' | 'children'
-
-  type EXLUDED_PROPS_TEST_SUITE = [
-    IsTrue<IfStrictEquals<ExcludedProps extends keyof PropTypes ? true : never, true>>,
-  ]
-
-  type ActualProps = P.Exclude<P.Override<PropTypes, DefaultProps>, ExcludedProps>
+  type ActualProps = P.Exclude<P.Override<PropTypes, DefaultProps>, 'children'>
 
   export const defaultProps: DefaultProps = {
-    colour: 'main',
+    colour: Colour.MAIN,
     fontFamily: 'main',
     fontSize: 'p',
     fontWeight: 'regular',
+    customize: [],
   }
 
-  export const Component = ({ children, customize, ...props }: PropTypes) => {
-    const actualProps = {
+  export const Component = ({ children, ...props }: PropTypes) => {
+    const actualProps: ActualProps = {
       ...defaultProps,
       ...props,
     }
+
+    const { customize } = actualProps
 
     const text = useMemo(() => childrenOnlyStrings(children), [children])
 
     if (!text) return null
 
-    const generatedText = useMemo<JSX.Element>(() => {
-      if (doesNotExist(customize) || isEmptyArray(customize))
-        return createCustomString(text, [], actualProps)
-      return createCustomString(text, customize, actualProps)
+    // TODO: Types
+    // TODO: IF NO CUSTOMIZER
+    const strings = useMemo(() => {
+      const result: Array<{ text: string; props: TextProps }> = []
+
+      for (const { match, ...rest } of customize) {
+        // Only first match
+        const startIndex = text.search(match)
+        const start = text.slice(0, startIndex)
+        result.push({ text: start, props: actualProps })
+        result.push({
+          text: match,
+          props: {
+            ...actualProps,
+            ...rest,
+            colour: rest.colour ?? actualProps.colour,
+          },
+        })
+        const end = text.slice(startIndex + match.length, text.length - 1)
+        result.push({ text: end, props: actualProps })
+
+        // All matches
+        // const strings = text.split(match)
+      }
+
+      return result
     }, [text, customize, actualProps])
 
-    return generatedText
+    return (
+      <>
+        {strings.map(({ props, text }) => (
+          <Text {...props}>{text}</Text>
+        ))}
+      </>
+    )
   }
 
-  // TODO: WTF???
-  export const TextContainer = styled.span(() => ({
-    display: 'block',
+  Component.displayName = ComponentName
+
+  interface TextProps extends ActualProps {}
+
+  export const Text = styled.span<TextProps>(({ colour, fontFamily, fontSize, fontWeight }) => ({
+    fontFamily: Fonts[fontFamily],
+    fontSize: FontSizes[fontSize],
+    fontWeight: FontWeights[fontWeight],
+    color: Colour.pallete[colour],
+    transition: '0.1s ease-in-out',
+    '::selection': {
+      background: Colour.pallete[colour],
+      colour: Colour.pallete[Colour.contrasts[colour]],
+    },
   }))
-
-  interface TextProps extends ActualProps, SizableProps {}
-
-  export const Text = styled.span<TextProps>(
-    ({ colour, size, fontFamily, fontSize, fontWeight }) => ({
-      fontFamily: Fonts[fontFamily],
-      fontSize: FontSizes[fontSize] * Sizes[size],
-      fontWeight: FontWeights[fontWeight],
-      color: Colours[colour],
-      transition: '0.1s ease-in-out',
-      '::selection': {
-        background: Colours[colour],
-        colour: Colours[Contrasts[colour]],
-      },
-    }),
-  )
 
   type COMPONENT_VALIDATION_FN = <T extends React.ReactNode>(c: T) => string | null
 
@@ -105,56 +113,5 @@ export namespace Text {
     }
 
     return strings.join('')
-  }
-
-  type CREATE_CUSTOM_STRING_FN = (
-    text: string,
-    customizer: Customizer,
-    props: ActualProps,
-  ) => JSX.Element
-
-  const createCustomString: CREATE_CUSTOM_STRING_FN = (text, cst, props) => {
-    const nodes = []
-    let remainingText = text
-
-    for (let i = 0, length = cst.length; i < length; i++) {
-      const { match, ...rest } = cst[i]
-
-      const firstString = remainingText.slice(0, remainingText.indexOf(match))
-      nodes.push(
-        {
-          text: firstString,
-          props,
-        },
-        {
-          text: match,
-          props: {
-            ...props,
-            ...rest,
-            color: rest.colour ? rest.colour : props.colour,
-          },
-        },
-      )
-      remainingText = remainingText.slice(remainingText.indexOf(match) + 1)
-    }
-
-    nodes.push({
-      text: remainingText,
-      props,
-    })
-
-    return (
-      <TextContainer>
-        {nodes.map(({ text, props }, idx) => (
-          <Sizable
-            render={({ size }) => (
-              <Text key={text + idx} {...{ size, ...props }}>
-                {text}
-              </Text>
-            )}
-          />
-        ))}
-      </TextContainer>
-    )
   }
 }

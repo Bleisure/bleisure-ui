@@ -15,10 +15,10 @@ export default {
           'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Color_icon_green.svg/2048px-Color_icon_green.svg.png',
       },
     },
-  } as Image.Props.Props,
+  } as Image.PropTypes,
 } as Meta
 
-export const Example = (args: Image.Props.Props) => (
+export const Example = (args: Image.PropTypes) => (
   <div style={{ width: 100 }}>
     <Image.Component {...args} />
   </div>

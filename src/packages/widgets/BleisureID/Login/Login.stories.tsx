@@ -8,7 +8,7 @@ export default {
   args: {},
 } as Meta
 
-export const Example = (args: Login.PropTypes.Props) => (
+export const Example = (args: Login.PropTypes) => (
   <div
     style={{
       display: 'block',

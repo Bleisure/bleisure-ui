@@ -3,21 +3,22 @@ import { Meta } from '@storybook/react'
 import { Shape } from '.'
 import { Image } from '../Image'
 import { Substrate } from '../Substrate'
+import Colour from '../../../design/colours'
 
 export default {
   title: 'Core/Shape',
   component: Shape.Component,
   args: {
-    ...Shape.Props.defaultProps,
+    ...Shape.defaultProps,
     width: 50,
-  } as Shape.Props.Props,
+  } as Shape.PropTypes,
 } as Meta
 
-export const Example = (args: Shape.Props.Props) => (
+export const Example = (args: Shape.PropTypes) => (
   <div style={{ position: 'relative', display: 'inline-block', padding: 20 }}>
-    <Substrate.Component corners="smooth" color="foreground" />
-    <Shape.Component {...args} ignorePaddings>
-      <Image.Component
+    <Substrate.Component borderType="smooth" colour={Colour.FOREGROUND} />
+    <Shape.Component {...args}>
+      {/* <Image.Component
         sources={{
           landscape: {
             small:
@@ -27,7 +28,7 @@ export const Example = (args: Shape.Props.Props) => (
               'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Color_icon_green.svg/2048px-Color_icon_green.svg.png',
           },
         }}
-      />
+      /> */}
     </Shape.Component>
   </div>
 )

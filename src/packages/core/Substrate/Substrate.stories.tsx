@@ -5,29 +5,29 @@ import { Meta } from '@storybook/react'
 import { Text } from '../Text'
 import { Substrate } from '.'
 import { Icon } from '../Icon'
-import { Contrasts } from '../../../assets/styles/colors'
+import Colour from '../../../design/colours'
 
 export default {
   title: 'Core/Substrate',
   component: Substrate.Component,
   description: "Parent must hold it's position relative (relative parent contains this substrate)",
-  args: Substrate.Props.defaultProps,
+  args: Substrate.defaultProps,
 } as Meta
 
-export const TextOnSubstrait = (args: Substrate.Props.Props) => (
+export const TextOnSubstrait = (args: Substrate.PropTypes) => (
   <AnyRelativeParent>
     <Substrate.Component {...args} />
     <Text.Component
-      color={Contrasts[args.color]}
+      colour={Colour.contrasts[args.colour]}
       fontSize="h2"
-    >{`Here is a text upside ${args.color}-color substrait`}</Text.Component>
+    >{`Here is a text upside ${String(args.colour)}-color substrait`}</Text.Component>
   </AnyRelativeParent>
 )
 
-export const IconOnSubstrait = (args: Substrate.Props.Props) => (
+export const IconOnSubstrait = (args: Substrate.PropTypes) => (
   <AnyRelativeParent>
-    <Substrate.Component color="foreground" corners="smooth" {...args} />
-    <Icon.Component src={EventIcon} {...args} />
+    <Substrate.Component colour={Colour.FOREGROUND} borderType="smooth" {...args} />
+    <Icon.Component Shape={{ width: 20 }} src={EventIcon} {...args} />
   </AnyRelativeParent>
 )
 
